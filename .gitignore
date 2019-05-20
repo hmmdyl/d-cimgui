@@ -1,0 +1,17 @@
+.dub
+docs.json
+__dummy.html
+docs/
+d-cimgui.so
+d-cimgui.dylib
+d-cimgui.dll
+d-cimgui.a
+d-cimgui.lib
+d-cimgui-test-*
+*.exe
+*.o
+*.obj
+*.lst
+*.visualdproj
+.vs
+d-cimgui.sln

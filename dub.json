@@ -1,0 +1,8 @@
+{
+	"name": "d-cimgui",
+	"description": "D bindings for cimgui",
+	"dependencies": {
+        "derelict-util": "~>2.0.0"
+	},
+	"targetType": "staticLibrary",
+}
