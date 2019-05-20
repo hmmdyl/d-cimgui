@@ -5,4 +5,5 @@
         "derelict-util": "~>2.0.0"
 	},
 	"targetType": "staticLibrary",
+	"licence": "MIT"
 }
