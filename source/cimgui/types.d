@@ -81,7 +81,7 @@ struct ImVector_ImDrawIdx { int size; int capacity; ImDrawIdx* data; }
 struct ImVector_ImVec2 { int size; int capacity; ImVec2* data; }
 
 struct ImVec2 { float x, y; }
-struct ImVec4 { float x, y; }
+struct ImVec4 { float x, y, z, w; }
 
 enum
 {
