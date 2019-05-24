@@ -1,5 +1,7 @@
 module cimgui.types;
 
+import cimgui.funcs;
+
 struct ImGuiContext;
 struct ImDrawListSharedData;
 
@@ -512,6 +514,8 @@ struct ImGuiStyle
     bool antiAliasedFill;
     float curveTessellationTol;
 	ImVec4[ImGuiCol_COUNT] colors;
+
+	void scaleAllSizes(float scaleFactor) { ImGuiStyle_ScaleAllSizes(this, scaleFactor); }
 }
 
 struct ImGuiIO
@@ -601,6 +605,14 @@ struct ImGuiIO
     float[ImGuiNavInput_COUNT] NavInputsDownDuration;
     float[ImGuiNavInput_COUNT] NavInputsDownDurationPrev;
     ImVector_ImWchar InputQueueCharacters;
+
+	void addInputCharacter(ImWchar c) { ImGuiIO_AddInputCharacter(this, c); }
+	void addInputCharactersUTF8(const char* str) { ImGuiIO_AddInputCharactersUTF8(this, str); }
+	void addInputCharactersUTF8(string str) 
+	{
+		import std.string : toStringz;
+		addInputCharactersUTF8(str.toStringz);
+	}
 }
 
 struct ImGuiInputTextCallbackData
