@@ -57,14 +57,170 @@ alias ImU64 = ulong;
 alias ImDrawCallback = void function(const ImDrawList* parentList, const ImDrawCmd* cmd);
 alias ImDrawIdx = ushort;
 
-struct ImVector
+struct ImVector(T, string N)
 {
 	int size;
 	int capacity;
-	void* data;
+	T* data;
+
+	static ImVector!(T, N)* create()
+	{
+		mixin("return ImVector_" ~ N ~ "_ImVector_" ~ N ~ "();");
+	}
+
+	void destroy()
+	{
+		mixin("ImVector_" ~ N ~ "_destroy(&this);");
+	}
+
+	bool empty()
+	{
+		mixin("return ImVector_" ~ N ~ "_empty(&this);");
+	}
+
+	int sizeInBytes()
+	{
+		mixin("return ImVector_" ~ N ~ "_size_in_bytes(&this);");
+	}
+
+	void clear()
+	{
+		mixin("ImVector_" ~ N ~ "_clear(&this);");
+	}
+
+	T* begin()
+	{
+		mixin("return ImVector_" ~ N ~ "_begin(&this);");
+	}
+
+	const(T*) beginConst()
+	{
+		mixin("return ImVector_" ~ N ~ "_begin_const(&this);");
+	}
+
+	T* end()
+	{
+		mixin("return ImVector_" ~ N ~ "_end(&this);");
+	}
+
+	const(T*) endConst()
+	{
+		mixin("return ImVector_" ~ N ~ "_end_const(&this);");
+	}
+
+	T* front()
+	{
+		mixin("return ImVector_" ~ N ~ "_front(&this);");
+	}
+
+	const(T*) frontConst()
+	{
+		mixin("return ImVector_" ~ N ~ "_front_const(&this);");
+	}
+
+	T* back()
+	{
+		mixin("return ImVector_" ~ N ~ "_back(&this);");
+	}
+
+	const(T*) backConst()
+	{
+		mixin("return ImVector_" ~ N ~ "_back_const(&this);");
+	}
+
+	void swap(ImVector!(T, N) rhs)
+	{
+		mixin("ImVector_" ~ N ~ "_swap(&this, rhs);");
+	}
+
+	int growCapacity(int sz)
+	{
+		mixin("return ImVector_" ~ N ~ "__grow_capacity(&this, sz);");
+	}
+
+	void resize(int newSize)
+	{
+		mixin("ImVector_" ~ N ~ "_resize(&this, newSize);");
+	}
+
+	void resizeT(int newSize, const T v)
+	{
+		mixin("ImVector_" ~ N ~ "_resizeT(&this, newSize, v);");
+	}
+
+	void reserve(int newCapacity)
+	{
+		mixin("ImVector_" ~ N ~ "_reserve(&this, newCapacity);");
+	}
+
+	void pushBack(const T v)
+	{
+		mixin("ImVector_" ~ N ~ "_push_back(&this, v);");
+	}
+
+	void popBack()
+	{
+		mixin("ImVector_" ~ N ~ "_pop_back(&this);");
+	}
+
+	void pushFront(const T v)
+	{
+		mixin("ImVector_" ~ N ~ "_push_front(&this, v);");
+	}
+
+	T* erase(const T* it)
+	{
+		mixin("return ImVector_" ~ N ~ "_erase(&this, it);");
+	}
+
+	T* eraseTPtr(const T* it, const T* itLast)
+	{
+		mixin("return ImVector_" ~ N ~ "_eraseTPtr(&this, it, itLast);");
+	}
+
+	T* eraseUnsorted(const T* it)
+	{
+		mixin("return ImVector_" ~ N ~ "_erase_unsorted(&this, it);");
+	}
+
+	T* insert(const T* it, const T v)
+	{
+		mixin("return ImVector_" ~ N ~ "_insert(&this, it, v);");
+	}
+
+	static if(N == "float" || N == "ImWchar" || N == "char" || N == "int")
+	{
+		bool contains(const T v)
+		{
+			mixin("return ImVector_" ~ N ~ "_contains(&this, v);");
+		}
+	}
+
+	int indexFromPtr(const T* it)
+	{
+		mixin("return ImVector_" ~ N ~ "_index_from_ptr(&this, it);");
+	}
 }
 
-struct ImVector_float { int size; int capacity; float* data; }
+alias ImVector_float = ImVector!(float, "float");
+alias ImVector_ImWchar = ImVector!(ImWchar, "ImWchar");
+alias ImVector_ImFontConfig = ImVector!(ImFontConfig, "ImFontConfig");
+alias ImVector_ImFontGlyph = ImVector!(ImFontGlyph, "ImFontGlyph");
+alias ImVector_TextRange = ImVector!(TextRange, "TextRange");
+alias ImVector_CustomRect = ImVector!(CustomRect, "CustomRect");
+alias ImVector_ImDrawChannel = ImVector!(ImDrawChannel, "ImDrawChannel");
+alias ImVector_char = ImVector!(char, "char");
+alias ImVector_ImTextureID = ImVector!(ImTextureID, "ImTextureID");
+alias ImVector_ImDrawVert = ImVector!(ImDrawVert, "ImDrawVert");
+alias ImVector_int = ImVector!(int, "int");
+alias ImVector_Pair = ImVector!(Pair, "Pair");
+alias ImVector_ImFontPtr = ImVector!(ImFont*, "ImFontPtr");
+alias ImVector_ImVec4 = ImVector!(ImVec4, "ImVec4");
+alias ImVector_ImDrawCmd = ImVector!(ImDrawCmd, "ImDrawCmd");
+alias ImVector_ImDrawIdx = ImVector!(ImDrawIdx, "ImDrawIdx");
+alias ImVector_ImVec2 = ImVector!(ImVec2, "ImVec2");
+
+/*struct ImVector_float { int size; int capacity; float* data; }
 struct ImVector_ImWchar { int size; int capacity; ImWchar* data; }
 struct ImVector_ImFontConfig { int size; int capacity; ImFontConfig* data; }
 struct ImVector_ImFontGlyph { int size; int capacity; ImFontGlyph* data; }
@@ -80,7 +236,7 @@ struct ImVector_ImFontPtr { int size; int capacity; ImFont** data; }
 struct ImVector_ImVec4 { int size; int capacity; ImVec4* data; }
 struct ImVector_ImDrawCmd { int size; int capacity; ImDrawCmd* data; }
 struct ImVector_ImDrawIdx { int size; int capacity; ImDrawIdx* data; }
-struct ImVector_ImVec2 { int size; int capacity; ImVec2* data; }
+struct ImVector_ImVec2 { int size; int capacity; ImVec2* data; }*/
 
 struct ImVec2 { float x, y; }
 struct ImVec4 { float x, y, z, w; }
